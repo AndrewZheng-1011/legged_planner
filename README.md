@@ -1,7 +1,7 @@
 # legged_planner
 ## Overview
 The package `legged_planner` makes use of the OCS2 repository to translate any general planning algorithms (e.g. single integrator, double integrator, rigid body model, etc.)  into a quadrupedal planning algorithm.
-This package differs from others in the sense that it can allow for high fidelity planning for quadrupeds and not simply velocity control.
+This package differs from others in the sense that it allows for high fidelity planning for quadrupeds (and not simply velocity control) with extreme ease.
 
 ## Dependencies
 This framework relies on the OCS2 repository, so the following dependencies needs to be installed. **NOTE**: OCS2 is a large repository, and so this repo will only build packages pertaining to legged robots. This package assumes the user is using Linux Distro Ubuntu 20.04 (Focal Fossa) and has set up the corresponding ros-distro (ros noetic) with a catkin workspace.
