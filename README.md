@@ -29,6 +29,7 @@ pip3 install numpy # Numpy
 # ROS Dependencies for catkin tools
 sudo apt-get install ros-$ROS_DISTRO-catkin python3-catkin-tools -y
 sudo apt-get install ros-$ROS_DISTRO-grid-map
+# Eigen library
 sudo apt-get install libeigen3-dev
 # Doxygen
 sudo apt-get install doxygen doxygen-doc doxygen-gui graphviz
