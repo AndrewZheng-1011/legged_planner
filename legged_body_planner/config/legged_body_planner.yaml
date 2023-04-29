@@ -13,6 +13,8 @@ trajectories_publisher:
 density_plan:
   goal : [10, 0] # Target position (x,y)
   obs_center : [5, 0.5] # List of center of obstacles
+  r1 : 1 # Obstacle region
+  r2 : 2 # Outer bound of transition region
   alpha : 0.2 # Tuning parameter of Lyapunov V(x)
   gain : 25 # Control multiplier
   saturation : 0.5 # Saturation on control

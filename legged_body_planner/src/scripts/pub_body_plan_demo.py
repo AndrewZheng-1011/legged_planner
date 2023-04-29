@@ -48,6 +48,8 @@ class PubBodyPlanDemo:
         # Get parameter | TODO Add helper function to warn when param not received
         self.goal = rospy.get_param("/density_plan/goal")
         self.obs_center = rospy.get_param("/density_plan/obs_center")
+        self.r1 = rospy.get_param("/density_plan/r1")
+        self.r2 = rospy.get_param("/density_plan/r2")
         self.alpha = rospy.get_param("/density_plan/alpha")
         self.gain = rospy.get_param("/density_plan/gain")
         self.saturation = rospy.get_param("/density_plan/saturation")
@@ -81,7 +83,7 @@ class PubBodyPlanDemo:
         x0 = self.state.value[6]
         y0 = self.state.value[7]
         density_plan = sym_density.Density(
-            r1=1, r2=2, obs_center=self.obs_center, goal=self.goal, alpha=self.alpha,
+            r1=self.r1, r2=self.r2, obs_center=self.obs_center, goal=self.goal, alpha=self.alpha,
             gain=self.gain, saturation=self.saturation, rad_from_goal=self.rad_from_goal)
         t, X, u = density_plan.get_plan(
             self.curr_time, x0, y0, self.horizon, self.dt)
