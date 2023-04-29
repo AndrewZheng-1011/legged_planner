@@ -1,0 +1,28 @@
+legged_body_planner:
+  frame_id : odom # May delete this
+  replan : true # Planner replans
+  update_rate : 20 # Hz
+  dt : 0.01 # Time interval of planner
+  goal_state : [5.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0] # Goal state (xyz_dot, ypr_dot, xyz,ypr)
+  num_states: 12 # Number of states in rigid body | Most likely delete later
+  num_controls: 12 # Number of controls in rigid body
+
+trajectories_publisher:
+  update_rate: 20 # Hz | Only use in spin()
+  
+density_plan:
+  goal : [10, 0] # Target position (x,y)
+  obs_center : [5, 0.5] # List of center of obstacles
+  alpha : 0.2 # Tuning parameter of Lyapunov V(x)
+  gain : 25 # Control multiplier
+  saturation : 0.5 # Saturation on control
+  rad_from_goal : 0.15 # Execute switching control in problem formulation
+  update_rate : 10 # Hz | Rate of feedback planner
+  horizon : 200 # Horizon of feedback planner
+  dt : 0.01 # Discretization of continuous formulation of FB controller
+  window_size : 21 # Moving average filter window
+  alpha1 : 0.98 # First Order filter on states (e.g. yaw)
+  alpha2 : 0.1 # First Order filter on time derivative states (e.g. yaw_dot)
+
+
+# TODO (AZ): Bad to mix ROS and their task.info... not sure how I want to address this

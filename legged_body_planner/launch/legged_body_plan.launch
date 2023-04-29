@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<launch>
+    <!-- Legged Body Plan -->
+    <rosparam file="$(find legged_body_planner)/config/legged_body_planner.yaml" command="load" />
+    <rosparam file="$(find legged_body_planner)/config/legged_body_planner_topics.yaml"
+        command="load" />
+    <node pkg="legged_body_planner" type="legged_body_planner_node" name="legged_body_planner"
+        output="screen" launch-prefix="gnome-terminal --" />
+    
+    <!-- Generic Planning Algorithm Here -->
+    <npde pkg="legged_body_planner" type="pub_body_plan_demo.py" name="generic_plan" output="screen"
+</launch>
