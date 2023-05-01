@@ -1,4 +1,8 @@
 # legged_planner
+<p align="center">
+  <img src="docs/anybotics_legged_planner.gif" alt="animated" />
+</p>
+
 ## Overview
 The package `legged_planner` makes use of the OCS2 repository to translate any general planning algorithms (e.g. single integrator, double integrator, rigid body model, etc.)  into a quadrupedal planning algorithm.
 This package differs from others in the sense that it allows for high fidelity planning for quadrupeds (and not simply velocity control) with extreme ease.
@@ -63,5 +67,5 @@ roslaunch legged_body_planner legged_body_plan.launch
 
 
 ## Personal Algorithms
-It is very intuitive to run this planning framework with a generic planning algorithms. Simply publish a plan in the form of a **Plan** msg, and the legged body planner node will handle the rest. See demo files in the scripts directory for an example
+It is very intuitive to run this planning framework with a generic planning algorithms. Simply publish a plan in the form of a `Plan` msg, and the legged body planner node will handle the rest. See demo files in the scripts directory for an example
 
