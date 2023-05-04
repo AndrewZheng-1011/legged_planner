@@ -13,7 +13,7 @@ Maintainers: Andrew Zheng (azheng@clemson.edu)**
 The Legged Body Msgs has been tested under [ROS] Noetic 20.04
 
 ## Messages (.msg)
-- `State.msg` : State defining robot. For quadruped robot states, states are defined as $\[v_x, v_y, v_z, yaw_{rate} pitch_{rate}, roll_{rate}, x, y, z, yaw, pitch$, and  $roll\]$
+- `State.msg` : State defining robot. For quadruped robot states, states are defined as $\[v_x, v_y, v_z, yaw_{rate}, pitch_{rate}, roll_{rate}, x, y, z, yaw, pitch$, and  $roll\]$
 - `Control.msg` : Control for robot. For quadruped control, torque control of each joints
 - `Plan.msg` : A message to hold a plan. Plan is defined as array of time, state, and control trajectories, and the time of plan (`std_msgs/time`)
 
