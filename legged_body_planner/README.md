@@ -6,7 +6,7 @@ Given a planner that publishes trajectories into the `plan` topic, the legged bo
 published to the ROS trajectories manager from OCS2.
 
 ### License
-This source ccode is released under a [MIT License](legged_planner/LICENSE).
+This source code is released under a [MIT License](legged_planner/LICENSE).
 
 **Author : Andrew Zheng, Sriram Krishnamoorthy <br />
 Affiliation : Distributed Intelligence and Robot Autonomy Lab <br />
