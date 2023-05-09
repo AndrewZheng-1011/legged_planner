@@ -58,8 +58,8 @@ void stateToRigidBodyState(const std::vector<float>& state,
   rigid_body_state[5] = 0;  // roll dot
   rigid_body_state[8] =
       planner_config.COM_HEIGHT;  // z | Use terrain info later
-  rigid_body_state[10] = 0;       // pitch | Use terrain info later
-  rigid_body_state[11] = 0;       // roll | Use terrain info later
+  // rigid_body_state[10] = 0;       // pitch | Use terrain info later
+  // rigid_body_state[11] = 0;       // roll | Use terrain info later
 }
 
 void controlToRigidBodyControl(const std::vector<float>& control,
