@@ -8,7 +8,7 @@ The package `legged_planner` makes use of the OCS2 repository to translate any g
 This package differs from others in the sense that it allows for high fidelity planning for quadrupeds (and not simply velocity control) with extreme ease.
 
 ## Dependencies
-This framework relies on the OCS2 repository, so the following dependencies needs to be installed. **NOTE**: OCS2 is a large repository, and so this repo will only build packages pertaining to legged robots. This package assumes the user is using Linux Distro Ubuntu 20.04 (Focal Fossa) and has set up/installed the ros-distro (ros noetic).
+This framework relies on the OCS2 repository, so the following dependencies needs to be installed. **NOTE**: OCS2 is a large repository, and so this repo will only build packages pertaining to legged robots. This package assumes the user is using Linux Distro Ubuntu 20.04 (Focal Fossa) and has set up/installed the ros-distro (ros noetic). If ROS Noetic not installed, see how to install [ROS Noetic](http://wiki.ros.org/noetic/Installation/Ubuntu).
 
 ### Create catkin workspace
 ```
@@ -20,12 +20,12 @@ mkdir -p ~/<catkin_ws_name>/src
 # Go to src directory
 cd ~/<catkin_ws_name>/src
 # clone the repository
-git clone git@github.com:AndrewZheng-1011/legged_planner.git
+git clone git@github.com:AndrewZheng-1011/legged_planner.git # # If have not setup ssh key, use the web url: https://github.com/AndrewZheng-1011/legged_planner.git
 ```
 
 ### Clone OCS2 & Dependencies ###
 ```
-git clone git@github.com:leggedrobotics/ocs2.git
+git clone git@github.com:leggedrobotics/ocs2.git # If have not setup ssh key, use the web url: https://github.com/leggedrobotics/ocs2.git
 git clone --recurse-submodules https://github.com/leggedrobotics/pinocchio.git
 git clone --recurse-submodules https://github.com/leggedrobotics/hpp-fcl.git
 git clone https://github.com/leggedrobotics/ocs2_robotic_assets.git
