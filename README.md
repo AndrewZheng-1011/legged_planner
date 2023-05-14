@@ -70,5 +70,5 @@ roslaunch legged_body_planner legged_body_plan.launch
 It is very intuitive to run this planning framework with a generic planning algorithms. Simply publish a plan in the form of a `Plan` msg, and the legged body planner node will handle the rest. See demo files in the scripts directory for an example
 
 ## TODO
-1. Do not override pitch angle and roll angle in planning utils
-2. Write demo file to show varying pitch and roll angle
+1. Write demo file to show varying pitch and roll angle
+2. Change code s.t. rely on OCS2 as little as possible
