@@ -5,10 +5,24 @@
 
 ## Overview
 The package `legged_planner` makes use of the OCS2 repository to translate any general planning algorithms (e.g. single integrator, double integrator, rigid body model, etc.)  into a quadrupedal planning algorithm.
-This package differs from others in the sense that it allows for high fidelity planning for quadrupeds (and not simply velocity control) with extreme ease.
+This package differs from others in the sense that it allows for high fidelity planning for quadrupeds (and not simply velocity control) with extreme ease. 
 
-## Dependencies
-This framework relies on the OCS2 repository, so the following dependencies needs to be installed. **NOTE**: OCS2 is a large repository, and so this repo will only build packages pertaining to legged robots. This package assumes the user is using Linux Distro Ubuntu 20.04 (Focal Fossa) and has set up/installed the ros-distro (ros noetic). If ROS Noetic not installed, see how to install [ROS Noetic](http://wiki.ros.org/noetic/Installation/Ubuntu).
+<p align="center">
+  <img src="docs/quad_diagram.png"/>
+</p>
+
+The `legged_planner` architecture of the algorithm consist of three core components:
+1. **Planning Algorithm**: The planning algorithm is the core component which relies on generating reference trajectories for the quadruped. Though, these planners need not to be planning algorithms for a legged robot, and could be standard planning algorithms (e.g. 2d or 3d planners).
+2. **Body Planner**: The body planner handles the logistics of transforming the plans from the planning algorithm. Currently, it uses a subscriber/publisher architecture to handle communication with the planning algorithm. The intention behind the body planner is to be able to incorporate any generic reference trajectory generation algorithms (e.g. RRT*, A*, CLF-CBF-QP, etc.)
+3. **Trajectories Manager**: The trajectories manager handles the transformed reference trajectory that is fed into the core components from the OCS2 repository that handles the discontinuous dynamics.
+
+Briefly summarizing the rest of the diagram (which are components in OCS2):
+- The finite state machine (FSM), handles generation of the discontinuous dynamics due to contact with the terrain
+- Accounting for disontinuous dynamics, NMPC generates locally optimal solution while adhering to dynamic constraints
+- These are then tracked through a low-level torque control
+
+## Getting Started
+This framework relies on the OCS2 repository, so the following dependencies needs to be installed. **NOTE**: OCS2 is a large repository, and so this repository will only build packages pertaining to legged robots. This package assumes the user is using Linux Distro Ubuntu 20.04 (Focal Fossa) and has set up/installed the ros-distro (ros noetic). If ROS Noetic not installed, see how to install [ROS Noetic](http://wiki.ros.org/noetic/Installation/Ubuntu).
 
 ### Create catkin workspace
 ```
@@ -59,9 +73,10 @@ Build ocs2 packages
 catkin build ocs2_legged_robot_ros ocs2_self_collision_visualization
 ```
 
-Build the source code of `legged_body_planner`
+Build the source code of `legged_body_planner` and source it
 ```
 catkin build legged_body_planner legged_body_msgs
+source ~/<catkin_ws_name>/devel/setup.bash
 ```
 
 
@@ -75,8 +90,9 @@ roslaunch legged_body_planner legged_body_plan.launch
 
 
 ## Personal Algorithms
-It is very intuitive to run this planning framework with a generic planning algorithms. Simply publish a plan in the form of a `Plan` msg, and the legged body planner node will handle the rest. See demo files in the scripts directory for an example
+It is very intuitive to run this planning framework with a generic planning algorithms. Simply publish a plan in the form of a `Plan` msg, and the legged body planner node will handle the rest. See demo files in the `src/scripts/pub_body_plan_demp.py` for an example
 
 ## TODO
 1. Write demo file to show varying pitch and roll angle
 2. Change code s.t. rely on OCS2 as little as possible
+3. Add architectural change s.t. compatible with either a server or subcriber/publisher framework
