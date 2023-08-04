@@ -4,7 +4,7 @@
 </p>
 
 ## Overview
-The package `legged_planner` makes use of the OCS2 repository to translate any general planning algorithms (e.g. single integrator, double integrator, rigid body model, etc.)  into a quadrupedal planning algorithm.
+The package `legged_planner` makes use of the [OCS2 repository](https://github.com/leggedrobotics/ocs2) to translate any general planning algorithms (e.g. single integrator, double integrator, rigid body model, etc.)  into a quadrupedal planning algorithm.
 This package differs from others in the sense that it allows for high fidelity planning for quadrupeds (and not simply velocity control) with extreme ease. 
 
 <p align="center">
@@ -100,5 +100,5 @@ Example of the fidelity of planning that can be controlled can be seen as well.
 
 ## TODO
 1. Write demo file to show varying pitch and roll angle
-2. Change code s.t. rely on OCS2 as little as possible
+2. Change code s.t. modularize reliance on OCS2
 3. Add architectural change s.t. compatible with either a server or subcriber/publisher framework
