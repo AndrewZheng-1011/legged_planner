@@ -73,12 +73,17 @@ Build ocs2 packages
 catkin build ocs2_legged_robot_ros ocs2_self_collision_visualization
 ```
 
+Make python script files executable
+```
+chmod+x ~/<catkin_ws_name>/src/legged_planner/legged_body_planner/src/scripts/pub_body_plan_demo.py
+chmod+x ~/<catkin_ws_name>/src/legged_planner/legged_body_planner/src/scripts/traj_pub_demo.py
+```
+
 Build the source code of `legged_body_planner` and source it
 ```
 catkin build legged_body_planner legged_body_msgs
 source ~/<catkin_ws_name>/devel/setup.bash
 ```
-
 
 ## Run Package:
 1. Initialize simulation
