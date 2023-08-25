@@ -94,7 +94,7 @@ roslaunch legged_body_planner legged_body_plan.launch
 
 
 ## Personal Algorithms
-It is very intuitive to run this planning framework with a generic planning algorithms. Simply publish a plan in the form of a `Plan` msg, and the legged body planner node will handle the rest. See demo files in the `src/scripts/pub_body_plan_demp.py` for an example. Then change the plan node in the `legged_body_plan.launch` file.
+It is very intuitive to run this planning framework with a generic planning algorithms. Simply publish a plan in the form of a `Plan` msg, and the legged body planner node will handle the rest. See demo files in the `legged_body_planner/src/scripts/pub_body_plan_demp.py` for an example. Then change the plan node in the `legged_body_plan.launch` file.
 
 Example of the fidelity of planning that can be controlled can be seen as well.
 
