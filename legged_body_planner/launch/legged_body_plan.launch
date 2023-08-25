@@ -8,5 +8,5 @@
         output="screen" launch-prefix="gnome-terminal --" />
     
     <!-- Generic Planning Algorithm Here -->
-    <npde pkg="legged_body_planner" type="pub_body_plan_demo.py" name="generic_plan" output="screen"
+    <npde pkg="legged_body_planner" type="pub_body_plan_demo.py" name="generic_plan" output="screen" />
 </launch>
