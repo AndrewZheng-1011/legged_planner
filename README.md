@@ -81,16 +81,20 @@ source ~/<catkin_ws_name>/devel/setup.bash
 
 
 ## Run Package:
-Initialize simulation
+1. Initialize simulation
 ```
 roslaunch ocs2_legged_robot_ros legged_robot_sqp.launch
-# Run one of the 'walking' gait sequences before running next launch file (e.g. trot)
+```
+
+2. Run one of the 'walking' gait sequences before running next launch file (e.g. trot)
+3. Run plan
+```
 roslaunch legged_body_planner legged_body_plan.launch
 ```
 
 
 ## Personal Algorithms
-It is very intuitive to run this planning framework with a generic planning algorithms. Simply publish a plan in the form of a `Plan` msg, and the legged body planner node will handle the rest. See demo files in the `src/scripts/pub_body_plan_demp.py` for an example.
+It is very intuitive to run this planning framework with a generic planning algorithms. Simply publish a plan in the form of a `Plan` msg, and the legged body planner node will handle the rest. See demo files in the `src/scripts/pub_body_plan_demp.py` for an example. Then change the plan node in the `legged_body_plan.launch` file.
 
 Example of the fidelity of planning that can be controlled can be seen as well.
 
@@ -99,6 +103,5 @@ Example of the fidelity of planning that can be controlled can be seen as well.
 </p>
 
 ## TODO
-1. Write demo file to show varying pitch and roll angle
-2. Change code s.t. modularize reliance on OCS2
-3. Add architectural change s.t. compatible with either a server or subcriber/publisher framework
+1. Change code s.t. modularize reliance on OCS2
+2. Add architectural change s.t. compatible with either a server or subcriber/publisher framework
