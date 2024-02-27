@@ -17,9 +17,11 @@ Maintainers : Andrew Zheng (azheng@clemson.edu) and Sriram Krishnamorthy (sriram
 
 
 ### Unit Tests
-Run the unit tests with
-
-    catkin run_tests legged_body_planner
+To run unit tests, do the following:
+```
+roslaunch legged_body_planner load_global_params.launch
+catkin test -i legged_body_planner
+```
 
 ## Usage
 Run the main node with
