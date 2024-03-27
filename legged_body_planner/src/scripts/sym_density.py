@@ -1,7 +1,5 @@
 #! /usr/bin/env python3
 
-# write a class with one method
-# method should take a list of parameters and return a value
 
 import numpy as np
 import matplotlib.pyplot as plt
@@ -32,6 +30,7 @@ class Density:
         self.saturation = saturation
         self.terminated = False
         self.rad_from_goal = rad_from_goal
+        self.N = int(len(obs_center)/2)
 
     def distance_metric(self):
         """
@@ -56,16 +55,19 @@ class Density:
         x, y = sp.symbols('x y')
         R = CoordSys3D('R')
         x_vec = x*R.i + y*R.j
-        obs = self.obs_center[0]*R.i + self.obs_center[1]*R.j
-        obs_dist = sp.sqrt((x_vec-obs).dot(x_vec-obs))
-        shape = (np.subtract(obs_dist**2, self.r1**2)) / \
-            np.subtract(self.r2**2, self.r1**2)
+        inverse_bump = 1
+        for i in range(self.N):
+            obs = self.obs_center[i*2]*R.i + \
+                self.obs_center[(i*2)+1]*R.j
+            obs_dist = sp.sqrt((x_vec-obs).dot(x_vec-obs))
+            shape = (np.subtract(obs_dist**2, self.r1**2)) / \
+                np.subtract(self.r2**2, self.r1**2)
 
-        f = sp.Piecewise((0, shape <= 0), (sp.exp(-1/shape), shape > 0))
-        shape_shift = 1-shape
-        f_shift = sp.Piecewise((0, shape_shift <= 0),
-                               (sp.exp(-1/shape_shift), shape_shift > 0))
-        inverse_bump = f/(f+f_shift)
+            f = sp.Piecewise((0, shape <= 0), (sp.exp(-1/shape), shape > 0))
+            shape_shift = 1-shape
+            f_shift = sp.Piecewise((0, shape_shift <= 0),
+                                   (sp.exp(-1/shape_shift), shape_shift > 0))
+            inverse_bump = inverse_bump * (f/(f+f_shift))
         inverse_bump_fn = sp.lambdify([x, y], inverse_bump)
         return inverse_bump, inverse_bump_fn
 
@@ -98,15 +100,19 @@ class Density:
         dist = sp.sqrt((x_vec-goal).dot(x_vec-goal))
 
         # inverse bump function
-        obs = self.obs_center[0]*R.i + self.obs_center[1]*R.j
-        obs_dist = sp.sqrt((x_vec-obs).dot(x_vec-obs))
-        shape = (np.subtract(obs_dist**2, self.r1**2)) / \
-            np.subtract(self.r2**2, self.r1**2)
-        f = sp.Piecewise((0, shape <= 0), (sp.exp(-1/shape), shape > 0))
-        shape_shift = 1-shape
-        f_shift = sp.Piecewise((0, shape_shift <= 0),
-                               (sp.exp(-1/shape_shift), shape_shift > 0))
-        inverse_bump = f/(f+f_shift)
+        inverse_bump = 1
+        for i in range(self.N):
+            obs = self.obs_center[i*2]*R.i + \
+                self.obs_center[(i*2)+1]*R.j
+            obs_dist = sp.sqrt((x_vec-obs).dot(x_vec-obs))
+            shape = (np.subtract(obs_dist**2, self.r1**2)) / \
+                np.subtract(self.r2**2, self.r1**2)
+
+            f = sp.Piecewise((0, shape <= 0), (sp.exp(-1/shape), shape > 0))
+            shape_shift = 1-shape
+            f_shift = sp.Piecewise((0, shape_shift <= 0),
+                                   (sp.exp(-1/shape_shift), shape_shift > 0))
+            inverse_bump = inverse_bump * (f/(f+f_shift))
 
         # density function
         rho = 1/(dist**(2*self.alpha))*inverse_bump
@@ -263,9 +269,9 @@ class Density:
                 u[1, i-1] = 0
 
             # saturate the control inputs
-            if np.max(u[:, i-1]) >= saturation:
+            if np.max(np.abs(u[:, i-1])) >= saturation:
                # print('saturation')
-                u[:, i-1] = (u[:, i-1]/np.max(u[:, i-1]))*saturation
+                u[:, i-1] = (u[:, i-1]/np.max(np.abs(u[:, i-1])))*saturation
 
             # propagate the states
             x[0, i] = x[0, i-1] + dt*u[0, i-1]
@@ -321,18 +327,24 @@ def symlog(x):
 
 ###################### main function ####################################################
 def main():
-    plot_density = False
+    plot_density = True
     plot_traj = True
-    density = Density()
+    density = Density(r1=0.1, r2=0.4, obs_center=[2, 0.1], goal=[
+                      5.0, 0], alpha=0.25, gain=10, saturation=0.05, rad_from_goal=0.15)
 
-    N = 5000
-    dt = 0.01
-    x0 = -2
-    y0 = -3
+    N = 1000
+    dt = 0.1
+    x0 = 0
+    y0 = 0
     current_t = 0
     rad_from_goal = 0.1
     t, x, u = density.get_plan(current_t, x0, y0, N, dt)
 
+    # print("Time trajectory size: ", np.shape(t))
+    # print("State trajectory size: ", np.shape(x))
+    # print("t shape: ", np.shape(t[0, :-2]))
+    # print("x0: ", np.shape(x[1, :-2]))
+    fig = plt.figure()
     ############################ plots for verificaion ######################################################
     if (plot_density == True):
         # surface plot of f_density
@@ -340,7 +352,6 @@ def main():
         Y = np.linspace(-10, 10, 100)
         f_distance = density.eval_density(X, Y)
 
-        fig = plt.figure()
         X, Y = np.meshgrid(X, Y)
         ax = fig.add_subplot(2, 2, 1, projection='3d')
         Z = np.array(f_distance).reshape(100, 100)
@@ -351,14 +362,28 @@ def main():
         fig.colorbar(surf1, shrink=0.5, aspect=5)
 
     if (plot_traj == True):
-        fig = plt.figure()
         ax = fig.add_subplot(2, 2, 2)
         ax.scatter(x[0, :-2], x[1, :-2])
         # ax.plot(t, x[0, :-2])
         # ax.plot(t, x[1,:-2])
         ax.set_xlabel('x')
         ax.set_ylabel('y')
+        ax.set_title("Environment")
 
+        ax = fig.add_subplot(2, 2, 3)
+        ax.plot(t[0, :-2], x[0, :-2], label='x')
+        ax.plot(t[0, :-2], x[1, :-2], label='y')
+        ax.set_xlabel('time [s]')
+        ax.set_ylabel("Position")
+        ax.legend()
+        ax.set_title("State Trajectory")
+
+        ax = fig.add_subplot(2, 2, 4)
+        ax.plot(t[0, :-2], u[0, :-2], label='v_x')
+        ax.plot(t[0, :-2], u[1, :-2], label='v_y')
+        ax.set_xlabel('time [s]')
+        ax.set_title('Control Trajectory')
+        ax.legend()
         plt.show()
 
 

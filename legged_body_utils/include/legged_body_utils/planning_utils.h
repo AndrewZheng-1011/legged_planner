@@ -63,6 +63,17 @@ void stdVecToEigen(const std::vector<T>& vec,
   }
 }
 
+template <typename VectorType, typename T>
+void vecToEigen(const VectorType& vector,
+                Eigen::Matrix<T, Eigen::Dynamic, 1>& eigenVector) {
+  // TODO (AZ): Make more generic
+  // TODO (AZ): Check if right
+  eigenVector.resize(vector.size());
+  for (std::size_t i = 0; i < vector.size(); i++) {
+    eigenVector[i] = vector[i];
+  }
+}
+
 /**
  * @brief Planner Configuration for Legged Robot
  */
@@ -70,8 +81,8 @@ struct PlannerConfig {
   // Robot parameters
   double COM_HEIGHT;
   double PLAN_HORIZON;
-  double NUM_STATES;
-  double NUM_CONTROLS;
+  int NUM_STATES;
+  int NUM_CONTROLS;
   double TARGET_ROTATION_VELOCITY;
   double TARGET_DISPLACEMENT_VELOCITY;
   double TIME_TO_TARGET;

@@ -1,10 +1,10 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <launch>
-    <!-- Legged Body Plan -->
+    <!-- Command Interface -->
     <rosparam file="$(find legged_body_planner)/config/legged_body_planner.yaml" command="load" />
-    <rosparam file="$(find legged_body_planner)/config/legged_body_planner_topics.yaml"
-        command="load" />
-    <node pkg="legged_body_planner" type="legged_body_planner_node" name="legged_body_planner"
+    <node pkg="legged_body_planner"
+        type="multi_command_interface_ros_node"
+        name="multi_command_interface_node"
         output="screen" launch-prefix="gnome-terminal --" />
     
     <!-- Generic Planning Algorithm Here -->

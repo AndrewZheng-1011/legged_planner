@@ -1,3 +1,0 @@
-topics:
-  plan : plan # Generic topic for algorithm to plan
-  body_plan : body_plan # Rigid body plan (12 states and control)

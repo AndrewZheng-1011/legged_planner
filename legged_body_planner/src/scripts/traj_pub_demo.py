@@ -16,12 +16,13 @@ import sys
 # Define global parameters
 rospy.init_node('traj_pub_demo', anonymous=True)
 # Parameters
-period = 5  # Desired period [s]
-A = 0.25  # Amplitude
+period = 20  # Desired period [s]
+A = 0.5  # Amplitude
 B = 2*math.pi/period
 rate_mult = 0.01  # Publish rate a factor of the period
 
-rate = rospy.Rate(1/(rate_mult*period))  # Hz
+# rate = rospy.Rate(1/(rate_mult*period))  # Hz
+rate = rospy.Rate(50)
 dt = rate_mult*period  # Discrete time step
 
 
@@ -34,7 +35,7 @@ def cmd_vel_talker():
         curr_time = rospy.Time.now()
         msg.linear.x = 0.0
         msg.linear.y = A*math.sin(B*(curr_time.to_sec() - start_time.to_sec()))
-        msg.linear.z = 0.325  # Go1 spec | Don't think this matters because does not use this info
+        msg.linear.z = 0
         msg.angular.x = 0
         msg.angular.y = 0
         msg.angular.z = 0
@@ -61,11 +62,13 @@ def target_pose_talker():
         msg.header.frame_id = "odom"
         curr_time = rospy.Time.now()
         msg.header.stamp = curr_time
-        msg.pose.position.x = A * \
-            math.cos(B*(curr_time.to_sec()-start_time.to_sec()))
+        # msg.pose.position.x = A * \
+        #     math.cos(B*(curr_time.to_sec()-start_time.to_sec()))
+        msg.pose.position.x = 0
         # Move like sine, derivative of sine
         msg.pose.position.y = A * \
             math.sin(B*(curr_time.to_sec()-start_time.to_sec()))
+        # msg.pose.position.y = 0.0
         msg.pose.position.z = 0.325  # Go1 spec | Doesn't matter
         # RPY 0 0 0 -> Quaternion 1 0 0 0
         msg.pose.orientation.x = 0.0

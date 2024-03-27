@@ -1,4 +1,4 @@
-#include "legged_body_planner/planning_utils.h"
+#include "legged_body_utils/planning_utils.h"
 
 namespace planning_utils {
 
@@ -54,8 +54,8 @@ void stateToRigidBodyState(const std::vector<float>& state,
   }
 
   // Enforce robot parameters
-  rigid_body_state[4] = 0;  // pitch dot
-  rigid_body_state[5] = 0;  // roll dot
+  // rigid_body_state[4] = 0;  // pitch dot
+  // rigid_body_state[5] = 0;  // roll dot
   rigid_body_state[8] =
       planner_config.COM_HEIGHT;  // z | Use terrain info later
   // rigid_body_state[10] = 0;       // pitch | Use terrain info later

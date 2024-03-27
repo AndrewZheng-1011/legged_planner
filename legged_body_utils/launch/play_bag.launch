@@ -1,0 +1,31 @@
+<launch>
+    <arg name="robot_type" default="$(env ROBOT_TYPE)" />
+    <arg name="rviz_config" default="$(find legged_unitree_hw)/launch/rviz_config.rviz" />
+    <arg name="log_bag" default="$(find legged_body_utils)/bags/legged_log.bag" />
+    <arg name="enable_plot" default="false" />
+    <arg name="plotjugg_config" default="$(find legged_body_utils)/config/plotjuggler_config_hw.xml" />
+
+    <arg name="mocap" default="true" />
+    <arg name="rviz" default="true" />
+    <group if="$(eval arg('robot_type') == 'go1')">
+        <!-- Go1 version -->
+        <param name="legged_robot_description"
+            command="$(find xacro)/xacro $(find legged_unitree_description)/urdf/go1/robot.xacro 
+            robot_type:=$(arg robot_type) MOCAP:=$(arg mocap)" />
+        <node name="generate_urdf" pkg="legged_common" type="generate_urdf.sh" output="screen"
+            args="$(find legged_unitree_description)/urdf/go1/robot.xacro $(arg robot_type) $(arg mocap)" />
+
+    </group>
+
+    <node name="rosbag_play" type="play" pkg="rosbag" output="screen" args="$(arg log_bag)" />
+
+    <group if="$(arg rviz)">
+        <node pkg="rviz" type="rviz" name="rviz" respawn="false"
+            args="-d $(arg rviz_config)" />
+    </group>
+
+    <group if="$(arg enable_plot)">
+        <node name="plotjugg" type="plotjuggler" pkg="plotjuggler"
+            args="--layout $(arg plotjugg_config)" />
+    </group>
+</launch>

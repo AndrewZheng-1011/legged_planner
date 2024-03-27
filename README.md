@@ -3,9 +3,10 @@
   <img src="docs/anybotics_legged_planner.gif" alt="animated" />
 </p>
 
+
 ## Overview
-The package `legged_planner` makes use of the [OCS2 repository](https://github.com/leggedrobotics/ocs2) to translate any general planning algorithms (e.g. single integrator, double integrator, rigid body model, etc.)  into a quadrupedal planning algorithm.
-This package differs from others in the sense that it allows for high fidelity planning for quadrupeds (and not simply velocity control) with extreme ease. 
+The package `legged_planner` makes use of the [OCS2 repository](https://github.com/leggedrobotics/ocs2) to transform any high level motion commands(e.g. planners from single integrator, double integrator, rigid body model, etc. or in general high velocity commands)  into a quadrupedal motion trajectory.
+This package differs from others in the sense that it allows for high fidelity motion planning for quadrupeds (and not simply velocity control) with extreme ease. 
 
 <p align="center">
   <img src="docs/quad_diagram.png"/>
@@ -73,6 +74,11 @@ Build ocs2 packages
 catkin build ocs2_legged_robot_ros ocs2_self_collision_visualization
 ```
 
+Install python dependencies
+```
+sh ~/<catkin_ws_name>/src/legged_planner/legged_body_planner/setup_deps.sh
+```
+
 Make python script files executable
 ```
 chmod+x ~/<catkin_ws_name>/src/legged_planner/legged_body_planner/src/scripts/pub_body_plan_demo.py
@@ -86,20 +92,22 @@ source ~/<catkin_ws_name>/devel/setup.bash
 ```
 
 ## Run Package:
+
+### Basic
 1. Initialize simulation
 ```
 roslaunch ocs2_legged_robot_ros legged_robot_sqp.launch
 ```
 
 2. Run one of the 'walking' gait sequences before running next launch file (e.g. trot)
-3. Run plan
+3. Initialize plan node
 ```
 roslaunch legged_body_planner legged_body_plan.launch
 ```
 
-
-## Personal Algorithms
-It is very intuitive to run this planning framework with a generic planning algorithms. Simply publish a plan in the form of a `Plan` msg, and the legged body planner node will handle the rest. See demo files in the `legged_body_planner/src/scripts/pub_body_plan_demp.py` for an example. Then change the plan node in the `legged_body_plan.launch` file.
+## Personalize Motion Command Interface
+### Generic motion planning
+It is very intuitive to run this command interface framework with a generic planning algorithms. Simply publish a plan in the form of a `Plan` msg, and the legged body planner node will handle the rest. See demo files in the `legged_body_planner/src/scripts/pub_body_plan_demo.py` for a python example. Then change the plan node in the `legged_body_plan.launch` file.
 
 Example of the fidelity of planning that can be controlled can be seen as well.
 
@@ -107,6 +115,11 @@ Example of the fidelity of planning that can be controlled can be seen as well.
   <img src="docs/legged_planner_wack_back.gif" alt="animated"/>
 </p>
 
+### Develop own motion command interface
+By utilizing an abstract class for motion adaptation (e.g. `/legged_body_planner/include/legged_body_planner/motion_adapters/MotionAdapter.h`), it is simple to then integrate the your own motion command interface. See the source files for examples. 
+
 ## TODO
+### General
 1. Change code s.t. modularize reliance on OCS2
 2. Add architectural change s.t. compatible with either a server or subcriber/publisher framework
+3. Add asynchronous threading s.t. different motion command interfaces can operate at different frequencies

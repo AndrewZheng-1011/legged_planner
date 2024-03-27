@@ -1,0 +1,17 @@
+<launch>
+    <arg name="bag_name" default="legged_log" />
+    <arg name="record_all" default="true" />
+    <group if="$(arg record_all)">
+        <node pkg="rosbag" type="record" name="rosbag_record"
+            args="record -O $(find legged_body_utils)/bags/$(arg bag_name) -a" />
+    </group>
+    <group unless="$(arg record_all)">
+        <node pkg="rosbag" type="record" name="rosbag_record"
+            args="record -O $(find legged_body_utils)/bags/$(arg bag_name) --tcpnodelay
+            /ground_truth/state
+            /joint_states
+            /legged_robot_mpc_mode_schedule
+            /legged_robot_mpc_observation
+            " />
+    </group>
+</launch>

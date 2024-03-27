@@ -1,0 +1,16 @@
+<launch>
+    <arg name="live_plot" default="false" />
+    <arg name="hardware" default="false" />
+
+    <group if="$(arg live_plot)">
+        <group if="$(arg hardware)">
+            <node name="plotjuggler" pkg="plotjuggler" type="plotjuggler"
+                args="--layout $(find legged_body_utils)/config/plotjuggler_config_hw.xml" />
+        </group>
+        <group unless="$(arg hardware)">
+            <node name="plotjuggler" pkg="plotjuggler" type="plotjuggler"
+                args="--layout $(find legged_body_utils)/config/plotjuggler_config.xml" />
+        </group>
+    </group>
+
+</launch>

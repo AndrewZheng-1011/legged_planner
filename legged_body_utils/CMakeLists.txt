@@ -1,34 +1,29 @@
 cmake_minimum_required(VERSION 3.0.2)
-project(legged_body_planner)
+project(legged_body_utils)
 
 ## Compile as C++11, supported in ROS Kinetic and newer
-add_compile_options(-std=c++11)
+# add_compile_options(-std=c++11)
 
 ## Find catkin macros and libraries
-
+## if COMPONENTS list like find_package(catkin REQUIRED COMPONENTS xyz)
+## is used, also find other catkin packages
 find_package(catkin REQUIRED COMPONENTS
-  angles
-  std_msgs
-  geometry_msgs
-  ocs2_msgs
   legged_body_msgs
-  legged_body_utils
+  ocs2_msgs
   roscpp
-  rospy
-  tf2
-  ocs2_legged_robot_ros
-  ocs2_robotic_tools
-  ocs2_ros_interfaces
-  grid_map_core
-  grid_map_ros
+  std_msgs
+  ocs2_core
+  ocs2_mpc
 )
 
+## System dependencies are found with CMake's conventions
+#find_package(Boost REQUIRED COMPONENTS system filesystem)
 
-find_package(Boost REQUIRED COMPONENTS 
-  system
-  filesystem
-  )
 
+## Uncomment this if the package has a setup.py. This macro ensures
+## modules and global scripts declared therein get installed
+## See http://ros.org/doc/api/catkin/html/user_guide/setup_dot_py.html
+# catkin_python_setup()
 
 
 ################################################
@@ -54,10 +49,16 @@ find_package(Boost REQUIRED COMPONENTS
 ###################################
 ## catkin specific configuration ##
 ###################################
+## The catkin_package macro generates cmake config files for your package
+## Declare things to be passed to dependent projects
+## INCLUDE_DIRS: uncomment this if your package contains header files
+## LIBRARIES: libraries you create in this project that dependent projects also need
+## CATKIN_DEPENDS: catkin_packages dependent projects also need
+## DEPENDS: system dependencies of this project that dependent projects also need
 catkin_package(
-  INCLUDE_DIRS include
-  LIBRARIES ${PROJECT_NAME}
-  CATKIN_DEPENDS angles geometry_msgs roscpp tf2 ocs2_robotic_tools ocs2_ros_interfaces std_msgs legged_body_msgs
+ INCLUDE_DIRS include
+ LIBRARIES legged_body_utils
+ CATKIN_DEPENDS legged_body_msgs ocs2_msgs roscpp std_msgs
 #  DEPENDS system_lib
 )
 
@@ -72,40 +73,38 @@ include_directories(
   ${catkin_INCLUDE_DIRS}
 )
 
-set(robot_command_LIB_SOURCES
-  src/robot_command/RobotCommand.cpp
-  src/robot_command/RobotVelocityCommand.cpp
-  src/robot_command/RobotGoalCommand.cpp
-  src/robot_command/RobotPlanCommand.cpp
-)
-
-set(motion_adapters_LIB_SOURCES
-  src/motion_adapters/LeggedRobotAdapter.cpp
-  )
-
 ## Declare a C++ library
 add_library(${PROJECT_NAME}
-  src/MultiCommandInterfaceRos.cpp
-  ${robot_command_LIB_SOURCES}
-  ${motion_adapters_LIB_SOURCES}
+  src/planning_utils.cpp
+  src/math_utils.cpp
 )
 
 ## Add cmake target dependencies of the library
+## as an example, code may need to be generated before libraries
+## either from message generation or dynamic reconfigure
 add_dependencies(${PROJECT_NAME} ${${PROJECT_NAME}_EXPORTED_TARGETS} ${catkin_EXPORTED_TARGETS})
+target_link_libraries(${PROJECT_NAME})
+#target_include_directories(${PROJECT_NAME} INTERFACE ${${PROJECT_NAME}_INCLUDE_DIRS})
 
 ## Declare a C++ executable
-add_executable(multi_command_interface_ros_node src/MultiCommandInterfaceRosNode.cpp)
+## With catkin_make all packages are built within a single CMake context
+## The recommended prefix ensures that target names across packages don't collide
+# add_executable(${PROJECT_NAME}_node src/legged_body_utils_node.cpp)
+
+## Rename C++ executable without prefix
+## The above recommended prefix causes long target names, the following renames the
+## target back to the shorter version for ease of user use
+## e.g. "rosrun someones_pkg node" instead of "rosrun someones_pkg someones_pkg_node"
+# set_target_properties(${PROJECT_NAME}_node PROPERTIES OUTPUT_NAME node PREFIX "")
 
 ## Add cmake target dependencies of the executable
 ## same as for the library above
-add_dependencies(multi_command_interface_ros_node ${${PROJECT_NAME}_EXPORTED_TARGETS} ${catkin_EXPORTED_TARGETS}) 
+# add_dependencies(${PROJECT_NAME}_node ${${PROJECT_NAME}_EXPORTED_TARGETS} ${catkin_EXPORTED_TARGETS})
 
 ## Specify libraries to link a library or executable target against
-target_link_libraries(multi_command_interface_ros_node
-  ${PROJECT_NAME}
-  ${catkin_LIBRARIES}
-)
-
+# target_link_libraries(${PROJECT_NAME}_node
+#   ${catkin_LIBRARIES}
+# )
 
 #############
 ## Install ##
@@ -154,28 +153,10 @@ target_link_libraries(multi_command_interface_ros_node
 #############
 
 ## Add gtest based cpp test target and link libraries
-catkin_add_gtest(robot_command-test
-   test/test_robot_command.cpp)
-if(TARGET robot_command-test)
-   target_link_libraries(robot_command-test ${PROJECT_NAME} ${catkin_LIBRARIES})
-endif()
+# catkin_add_gtest(${PROJECT_NAME}-test test/test_legged_body_utils.cpp)
+# if(TARGET ${PROJECT_NAME}-test)
+#   target_link_libraries(${PROJECT_NAME}-test ${PROJECT_NAME})
+# endif()
 
-catkin_add_gtest(motion_adapter-test
-   test/test_motion_adapter.cpp)
-if(TARGET motion_adapter-test)
-   target_link_libraries(motion_adapter-test ${PROJECT_NAME} ${catkin_LIBRARIES})
-endif()
-
-#########################
-###   CLANG TOOLING   ###
-#########################
-find_package(cmake_clang_tools QUIET)
-if (cmake_clang_tools_FOUND)
-    message(STATUS "Run clang tooling for target " ${PROJECT_NAME})
-    add_clang_tooling(
-            TARGETS ${PROJECT_NAME} legged_target_trajectories_publisher
-            SOURCE_DIRS ${CMAKE_CURRENT_SOURCE_DIR}/src ${CMAKE_CURRENT_SOURCE_DIR}/include
-            CT_HEADER_DIRS ${CMAKE_CURRENT_SOURCE_DIR}/include
-            CF_WERROR
-    )
-endif (cmake_clang_tools_FOUND)
+## Add folders to be run by python nosetests
+# catkin_add_nosetests(test)

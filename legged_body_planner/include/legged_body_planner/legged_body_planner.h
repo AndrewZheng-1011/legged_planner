@@ -4,16 +4,17 @@
 #include <legged_body_msgs/Control.h>
 #include <legged_body_msgs/Plan.h>
 #include <legged_body_msgs/State.h>
+#include <legged_body_utils/planning_utils.h>
 #include <ocs2_core/misc/LoadData.h>
 #include <ocs2_mpc/SystemObservation.h>
 #include <ocs2_msgs/mpc_observation.h>
 #include <ocs2_ros_interfaces/common/RosMsgConversions.h>
 #include <ros/ros.h>
+#include <std_msgs/Bool.h>
 
 #include <mutex>
 
-#include "legged_body_planner/planning_utils.h"
-#include "legged_body_planner/trajectories_publisher.h"
+#include "legged_body_planner/multi_command_interface.h"
 
 //! Body Planning class for legged robots
 /*!
@@ -71,6 +72,12 @@ class LeggedBodyPlanner {
   void planCallback(const legged_body_msgs::Plan::ConstPtr& plan);
 
   /**
+   * @brief Message to terminate plan
+   * @param msg Boolean msg to terminate plan
+   */
+  void terminatePlanCallback(const std_msgs::Bool::ConstPtr& msg);
+
+  /**
    * @brief Terrain callback (TODO (AZ): probably a service)
    */
   void terrainCallback();
@@ -101,9 +108,9 @@ class LeggedBodyPlanner {
   /// @brief Planner Configurations
   planning_utils::PlannerConfig planner_config_;
 
-  // /// @brief Shared pointer for object which converts msg to target
+  // /// @brief Shared pointer for object which converts command msg to target
   // trajectories
-  std::unique_ptr<TrajectoriesPublisher> trajectories_publisher_ptr_;
+  std::unique_ptr<MultiCommandInterface> trajectories_publisher_ptr_;
 
   /// @brief Current robot configuration (x_dot, euler rate, x, euler)
   legged_body_msgs::State rigid_body_states_;

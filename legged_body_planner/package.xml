@@ -4,6 +4,8 @@
   <version>0.0.0</version>
   <description>The legged_body_planner package</description>
   <maintainer email="azheng@g.clemson.edu">Andrew Zheng</maintainer>
+  <!-- Commonly used license strings: -->
+  <!--   BSD, MIT, Boost Software License, GPLv2, GPLv3, LGPLv2.1, LGPLv3 -->
   <license>MIT</license>
 
 
@@ -12,9 +14,14 @@
   <!-- Example: -->
   <!-- <url type="website">http://wiki.ros.org/legged_body_planner</url> -->
   <author email="azheng@clemson.edu">Andrew Zheng</author>
-  <author email="sriramk@clemson.edu">Sriram S.K.S. Narayanan </author> 
 
 
+  <!-- Use depend as a shortcut for packages that are both build and exec dependencies -->
+  <!-- Use build_export_depend for packages you need in order to build against this package: -->
+  <!--   <build_export_depend>message_generation</build_export_depend> -->
+  <!-- Use buildtool_depend for build tool packages: -->
+  <!--   <buildtool_depend>catkin</buildtool_depend> -->
+  <!-- Use exec_depend for packages you need at runtime: -->
   <test_depend>gtest</test_depend>
   <!-- Use doc_depend for packages you need only for building documentation: -->
   <!--   <doc_depend>doxygen</doc_depend> -->
@@ -26,19 +33,25 @@
   <build_depend>roscpp</build_depend>
   <build_depend>rospy</build_depend>
   <build_depend>tf2</build_depend>
+  <build_depend>grid_map_core</build_depend>
+  <build_depend>grid_map_ros</build_depend>
   <build_depend>ocs2_legged_robot_ros</build_depend>
   <build_depend>ocs2_robotic_tools</build_depend>
   <build_depend>ocs2_ros_interfaces</build_depend>
+  <build_depend>legged_body_utils</build_depend>
   <build_export_depend>angles</build_export_depend>
   <build_export_depend>geometry_msgs</build_export_depend>
   <build_export_depend>std_msgs</build_export_depend>
   <build_export_depend>legged_body_msgs</build_export_depend>
   <build_export_depend>roscpp</build_export_depend>
   <build_export_depend>rospy</build_export_depend>
+  <build_export_depend>grid_map_core</build_export_depend>
+  <build_export_depend>grid_map_ros</build_export_depend>
   <build_export_depend>tf2</build_export_depend>
   <build_export_depend>ocs2_legged_robot_ros</build_export_depend>
   <build_export_depend>ocs2_robotic_tools</build_export_depend>
   <build_export_depend>ocs2_ros_interfaces</build_export_depend>
+  <build_export_depend>legged_body_utils</build_export_depend>
   <exec_depend>angles</exec_depend>
   <exec_depend>geometry_msgs</exec_depend>
   <exec_depend>std_msgs</exec_depend>
@@ -46,9 +59,12 @@
   <exec_depend>roscpp</exec_depend>
   <exec_depend>rospy</exec_depend>
   <exec_depend>tf2</exec_depend>
+  <exec_depend>grid_map_core</exec_depend>
+  <exec_depend>grid_map_ros</exec_depend>
   <exec_depend>ocs2_legged_robot_ros</exec_depend>
   <exec_depend>ocs2_robotic_tools</exec_depend>
   <exec_depend>ocs2_ros_interfaces</exec_depend>
+  <exec_depend>legged_body_utils</exec_depend>
 
 
   <!-- The export tag contains other, unspecified, tags -->
