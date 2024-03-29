@@ -9,13 +9,12 @@ The package `legged_planner` makes use of the [OCS2 repository](https://github.c
 This package differs from others in the sense that it allows for high fidelity motion planning for quadrupeds (and not simply velocity control) with extreme ease. 
 
 <p align="center">
-  <img src="docs/quad_diagram.png"/>
+  <img src="docs/motion_command_interface_module.png"/>
 </p>
 
-The `legged_planner` architecture of the algorithm consist of three core components:
-1. **Planning Algorithm**: The planning algorithm is the core component which relies on generating reference trajectories for the quadruped. Though, these planners need not to be planning algorithms for a legged robot, and could be standard planning algorithms (e.g. 2d or 3d planners).
-2. **Body Planner**: The body planner handles the logistics of transforming the plans from the planning algorithm. Currently, it uses a subscriber/publisher architecture to handle communication with the planning algorithm. The intention behind the body planner is to be able to incorporate any generic reference trajectory generation algorithms (e.g. RRT*, A*, CLF-CBF-QP, etc.)
-3. **Trajectories Manager**: The trajectories manager handles the transformed reference trajectory that is fed into the core components from the OCS2 repository that handles the discontinuous dynamics.
+The `legged_planner` architecture of the algorithm consist of two core components:
+1. **Multi Command Interface**: Abstract class that handles logistics in interfacing with varying command interface (e.g. velocity command, target pose, or motion planning trajectories). This increases the ease of utilizing different commands for quadrupeds
+2. **Motion Adapter**: A filtering layer that transforms these motion trajectories into trajectories appropriate for a legged robot.
 
 Briefly summarizing the rest of the diagram (which are components in OCS2):
 - The finite state machine (FSM), handles generation of the discontinuous dynamics due to contact with the terrain
