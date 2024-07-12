@@ -36,7 +36,7 @@ roslaunch legged_body_planner legged_body_plan.launch
 
 ## Nodes
 
-### legged_body_planner
+### multi_command_interface_ros_node
 Publishes body plan to a MPC target trajectories. The node communicates with a planning topic of user choice as seen in the node source files (e.g. `src/MultiCommandInterfaceRosNode.cpp`) and transforms the plan to a quadruped plan. There are various options for the different command interface that a user wishes to utilize:
 - Robot Velocity: Useful for giving velocity commands only
 - Robot Goal: Useful for giving a command for the robot to go towards a specific target point
