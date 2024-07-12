@@ -21,7 +21,7 @@ Briefly summarizing the rest of the diagram (which are components in OCS2):
 - Accounting for disontinuous dynamics, NMPC generates locally optimal solution while adhering to dynamic constraints
 - These are then tracked through a low-level torque control
 
-## Getting Started
+## Installation
 This framework relies on the OCS2 repository, so the following dependencies needs to be installed. **NOTE**: OCS2 is a large repository, and so this repository will only build packages pertaining to legged robots. This package assumes the user is using Linux Distro Ubuntu 20.04 (Focal Fossa) and has set up/installed the ros-distro (ros noetic). If ROS Noetic not installed, see how to install [ROS Noetic](http://wiki.ros.org/noetic/Installation/Ubuntu).
 
 ### Create catkin workspace
@@ -90,9 +90,7 @@ catkin build legged_body_planner legged_body_msgs
 source ~/<catkin_ws_name>/devel/setup.bash
 ```
 
-## Run Package:
-
-### Basic
+## Usage
 1. Initialize simulation
 ```
 roslaunch ocs2_legged_robot_ros legged_robot_sqp.launch
@@ -122,3 +120,4 @@ By utilizing an abstract class for motion adaptation (e.g. `/legged_body_planner
 1. Change code s.t. modularize reliance on OCS2
 2. Add architectural change s.t. compatible with either a server or subcriber/publisher framework
 3. Add asynchronous threading s.t. different motion command interfaces can operate at different frequencies
+4. Update README.md to add what the ROS input and outputs are for easier usage
